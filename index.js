@@ -73,7 +73,7 @@ function createStoreProduct(product){
   const addToCartButton = document.createElement('button')
   addToCartButton.textContent = 'Add to cart'
   //Appending
-  storeItemList.append(productLi)
+  storeItemList.append(storeProductLi)
   storeProductLi.append(storeIconDiv,addToCartButton)
   storeIconDiv.append(productImage)
 }
@@ -85,14 +85,37 @@ function createCartItems(product){
   cartProductImage.setAttribute('src', product.id)
   cartProductImage.setAttribute('alt', product.name)
   cartProductImage.setAttribute('class','cart--item-icon')
+  //Paragraph with product name
+  const productNameP = document.createElement('p')
+  productNameP.textContent = product.name
+  //Remove button
+  const removeButton = document.createElement('button')
+  removeButton.className ='quantity-btn remove-btn center'
+  removeButton.textContent = '-'
+  //Create span which contains number of products
+  const numberOfProductsSpan = document.createElement('span')
+  numberOfProductsSpan.className='quantity-btn remove-btn center'
+  numberOfProductsSpan.textContent = product.quantity
+  //Add more Button
+  const addQuantity = document.createElement('button')
+  addQuantity.className = 'quantity-btn add-btn center'
+  addQuantity.textContent = '+'
 }
+
 function renderStoreItems(){
+  for(let product of state.productsInCart){
+    createStoreProduct(product)
+  }
+}
+function renderCartItems(){
   for(let product of state.products){
     createStoreProduct(product)
   }
 }
 
 
-
-
-renderStoreItems()
+function init(){
+  renderCartItems()
+  renderStoreItems()
+}
+init()
