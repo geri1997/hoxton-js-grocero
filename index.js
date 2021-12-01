@@ -4,63 +4,79 @@ const state={
     {
       id: 1,
       name:'beetroot',
-      price:0.35
+      price:0.35,
+      color:'pink'
     },
     {
       id:2,
       name:'carrot',
-      price: 0.55
+      price: 0.55,
+      color: 'orange'
     },
     {
       id:3,
       name:'apple',
-      price:0.85
+      price:0.85,
+      color:'red'
     },
     {
       id:4,
       name:'apricot',
-      price:0.15
+      price:0.15,
+      color:'orange'
     },
     {
       id:5,
       name:'avocado',
-      price:0.45
+      price:0.45,
+      color:'green'
     },
     {
       id:6,
       name:'bananas',
-      price:0.35
+      price:0.35,
+      color:'yellow'
     },
     {
       id:07,
       name:'bell-pepper',
-      price:0.6
+      price:0.6,
+      color:'green'
     },
     {
       id:08,
       name:'berry',
-      price:0.3
+      price:0.3,
+      color:'red'
     },
     {
       id:09,
       name:'blueberry',
-      price:0.75
+      price:0.75,
+      color:'blue'
     },
     {
       id:10,
       name:'eggplant',
-      price:0.95
+      price:0.95,
+      color:'purple'
     }
 
   ],
   productsInCart:[
+
+  ],
+  selectedFilters:[
 
   ]
 }
 const storeItemList = document.querySelector('.store--item-list')
 const cartItemList = document.querySelector('.cart--item-list')
 const priceSpan = document.querySelector('.total-number')
-
+let allColors = []
+for(let product of state.products){
+  allColors.push(product.color)
+}
 
 function addToCart(product){
   for(let cartProduct of state.productsInCart){
@@ -135,8 +151,8 @@ function createCartItems(product){
   })
   removeButton.addEventListener('click',(e)=>{
       if(product.quantity===1){
-        state.productsInCart = state.productsInCart.filter((product)=>{
-          return product.quantity!==1
+        state.productsInCart = state.productsInCart.filter((products)=>{
+          return product.name!==products.name
         }
         )
         renderCartItems()
@@ -149,6 +165,14 @@ function createCartItems(product){
 }
 
 function renderStoreItems(){
+  allColors = []
+  for(let product of state.products){
+  allColors.push(product.color)
+}
+  allColors = allColors.filter((color,index)=>{
+    return allColors.indexOf(color)===index
+  })
+
   for(let product of state.products){
     createStoreProduct(product)
   }
