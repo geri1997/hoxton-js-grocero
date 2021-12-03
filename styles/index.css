@@ -211,6 +211,11 @@ button {
   font-weight: bold;
 }
 
+.color{
+  position: absolute;
+  top: 300px;
+}
+
 @media only screen and (max-width: 450px) {
   .total-section {
     border-top: 2px solid #00675b;

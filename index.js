@@ -73,9 +73,18 @@ const state={
 const storeItemList = document.querySelector('.store--item-list')
 const cartItemList = document.querySelector('.cart--item-list')
 const priceSpan = document.querySelector('.total-number')
-let allColors = []
+
+
+
+function returnArrayOfColors(){
+  let allColors = []
 for(let product of state.products){
   allColors.push(product.color)
+}
+  allColors = allColors.filter((color,index)=>{
+    return allColors.indexOf(color)===index
+  })
+  return allColors
 }
 
 function addToCart(product){
@@ -165,21 +174,15 @@ function createCartItems(product){
 }
 
 function renderStoreItems(){
-  allColors = []
-  for(let product of state.products){
-  allColors.push(product.color)
-}
-  allColors = allColors.filter((color,index)=>{
-    return allColors.indexOf(color)===index
-  })
-
-  for(let product of state.products){
+  storeItemList.innerHTML = ''
+  for(let product of returnColorFilteredProductArray()){
     createStoreProduct(product)
   }
 }
 function renderCartItems(){
   cartItemList.innerHTML = ''
   let price = 0
+
   
   for(let product of state.productsInCart){
     createCartItems(product)
@@ -188,11 +191,49 @@ function renderCartItems(){
   priceSpan.textContent = `£${price.toFixed(2)}`
 }
 
+function returnColorFilteredProductArray(){
+  let filteredProductsByColor = state.products.filter(product=>{
+    if(state.selectedFilters.length === 0){ 
+      return true
+    }
+    for(let selectedColor of state.selectedFilters){
+      if(product.color===selectedColor)return true
+    }
+    return false
+    }
+  )
+  return filteredProductsByColor
+}
+
+
+function createFilterCheckboxes(){
+  for(let color of returnArrayOfColors()){
+    const checkboxColor = document.createElement('input')
+    checkboxColor.setAttribute('type','checkbox')
+    const colorDiv = document.querySelector('.color')
+    colorDiv.prepend(color,checkboxColor)
+
+    checkboxColor.addEventListener('click',()=>{
+      if(checkboxColor.checked){
+        state.selectedFilters.push(color)
+        renderStoreItems()
+      }else{
+        state.selectedFilters.splice(state.selectedFilters.indexOf(color),1)
+        checkboxColor.checked = false
+        renderStoreItems()
+      }
+    })
+  }
+}
 
 function init(){
+  returnArrayOfColors()
   renderCartItems()
   renderStoreItems()
+  createFilterCheckboxes()
 }
 init()
+
+
 
 
