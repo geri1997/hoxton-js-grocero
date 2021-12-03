@@ -11,6 +11,8 @@
 body {
   font-family: 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
   color: var(--primary-color-darker);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 h1,
@@ -32,7 +34,7 @@ button {
 /* Store */
 
 #store {
-  height: 40vh;
+  /* height: 40vh; */
   padding: 1rem;
 
   overflow-y: scroll;
@@ -121,7 +123,7 @@ button {
 
 .cart--item-list-container {
   min-width: 320px;
-  height: 100%;
+  min-height: 200px;
   padding: 0 1rem;
 
   overflow-y: scroll;
@@ -211,10 +213,10 @@ button {
   font-weight: bold;
 }
 
-.color{
+/* .color{
   position: absolute;
   top: 300px;
-}
+} */
 
 @media only screen and (max-width: 450px) {
   .total-section {

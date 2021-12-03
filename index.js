@@ -159,18 +159,22 @@ function createCartItems(product){
     renderCartItems()
   })
   removeButton.addEventListener('click',(e)=>{
-      if(product.quantity===1){
-        state.productsInCart = state.productsInCart.filter((products)=>{
-          return product.name!==products.name
-        }
-        )
-        renderCartItems()
-      }else{
-      product.quantity--
+      minus1Quantity(product)
       renderCartItems()
-     }
+
   })
 
+}
+
+function minus1Quantity(product){
+  if(product.quantity===1){
+    state.productsInCart = state.productsInCart.filter((products)=>{
+      return product.name!==products.name
+    }
+    )
+  }else{
+  product.quantity--
+ }
 }
 
 function renderStoreItems(){
