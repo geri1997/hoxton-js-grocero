@@ -91,12 +91,23 @@ function addToCart(product){
   for(let cartProduct of state.productsInCart){
     if(product.name===cartProduct.name){
       cartProduct.quantity++
-      renderCartItems()
+      renderCartItemsAndPrice()
       return false
           }
   }
   state.productsInCart.push(product)
   product.quantity = 1;
+}
+
+function minus1Quantity(product){
+  if(product.quantity===1){
+    state.productsInCart = state.productsInCart.filter((products)=>{
+      return product.name!==products.name
+    }
+    )
+  }else{
+  product.quantity--
+ }
 }
 
 
@@ -122,7 +133,7 @@ function createStoreProduct(product){
   //Add to Cart Event listener
   addToCartButton.addEventListener('click',(e)=>{
     addToCart(product)
-    renderCartItems()
+    renderCartItemsAndPrice()
   })
 
 
@@ -156,26 +167,17 @@ function createCartItems(product){
   //Add quantity Event listener
   addQuantityButton.addEventListener('click',(e)=>{
     addToCart(product)
-    renderCartItems()
+    renderCartItemsAndPrice()
   })
   removeButton.addEventListener('click',(e)=>{
       minus1Quantity(product)
-      renderCartItems()
+      renderCartItemsAndPrice()
 
   })
 
 }
 
-function minus1Quantity(product){
-  if(product.quantity===1){
-    state.productsInCart = state.productsInCart.filter((products)=>{
-      return product.name!==products.name
-    }
-    )
-  }else{
-  product.quantity--
- }
-}
+
 
 function renderStoreItems(){
   storeItemList.innerHTML = ''
@@ -183,7 +185,7 @@ function renderStoreItems(){
     createStoreProduct(product)
   }
 }
-function renderCartItems(){
+function renderCartItemsAndPrice(){
   cartItemList.innerHTML = ''
   let price = 0
 
@@ -232,12 +234,38 @@ function createFilterCheckboxes(){
 
 function init(){
   returnArrayOfColors()
-  renderCartItems()
+  renderCartItemsAndPrice()
   renderStoreItems()
   createFilterCheckboxes()
 }
 init()
 
+function render(){
+  renderCartItemsAndPrice()
+  renderStoreItems()
+}
 
+function sortLowToHigh(){
+  state.products.sort(function (a,b){
+    return a.price - b.price
+})
+}
+function sortHighToLow(){
+  state.products.sort(function (a,b){
+    return b.price - a.price
+})
+}
 
+//Sort by Asceding price
+const lowToHighBtn = document.querySelector('#asc')
+lowToHighBtn.addEventListener('click',()=>{
+  sortLowToHigh()
+  render()
+})
 
+//Sort by Descending price
+const HighToLowBtn = document.querySelector('#desc')
+HighToLowBtn.addEventListener('click',()=>{
+  sortHighToLow()
+  render()
+})
