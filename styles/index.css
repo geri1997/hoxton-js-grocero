@@ -123,7 +123,7 @@ button {
 
 .cart--item-list-container {
   min-width: 320px;
-  min-height: 500px;
+  min-height: 400px;
   padding: 0 1rem;
 
   overflow-y: scroll;

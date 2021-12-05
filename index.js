@@ -117,6 +117,13 @@ function minus1Quantity(product){
  }
 }
 
+function capitalizeWord(word){
+  let wordArr = word.split('')
+  let capitalLetter = wordArr[0].toUpperCase()
+  wordArr.shift()
+  wordArr.unshift(capitalLetter)
+  return wordArr.join('')
+}
 
 
 function createStoreProduct(product){
@@ -135,8 +142,9 @@ function createStoreProduct(product){
   const productPrice = document.createElement('p')
   productPrice.textContent = product.price
   productPrice.style.color = 'white'
+  
   const productName = document.createElement('p')
-  productName.textContent = product.name
+  productName.textContent = capitalizeWord(product.name)
   productName.style.color = 'white'
   //Appending
   storeItemList.append(storeProductLi)
@@ -161,7 +169,7 @@ function createCartItems(product){
   cartProductImage.setAttribute('class','cart--item-icon')
   //Paragraph with product name
   const productNameP = document.createElement('p')
-  productNameP.textContent = product.name
+  productNameP.textContent = capitalizeWord(product.name)
   //Remove button
   const removeButton = document.createElement('button')
   removeButton.className ='quantity-btn remove-btn center'
@@ -279,6 +287,7 @@ function render(){
   renderStoreItems()
 }
 
+//Price Sorting
 function sortLowToHigh(){
   state.sortedInfo.sorted=true
   state.sortedInfo.ascending=true
@@ -297,6 +306,10 @@ const lowToHighBtn = document.querySelector('#asc')
 lowToHighBtn.addEventListener('click',()=>{
   sortLowToHigh()
   render()
+  zToABtn.style.background = '#efefef'
+  aToZBtn.style.background = '#efefef'
+  highToLowBtn.style.background = '#efefef'
+  lowToHighBtn.style.background = 'skyblue'
 })
 
 //Sort by Descending price
@@ -304,17 +317,33 @@ const highToLowBtn = document.querySelector('#desc')
 highToLowBtn.addEventListener('click',()=>{
   sortHighToLow()
   render()
+  zToABtn.style.background = '#efefef'
+  aToZBtn.style.background = '#efefef'
+  highToLowBtn.style.background = 'skyblue'
+  lowToHighBtn.style.background = '#efefef'
 })
 
+
+//Alphabetical Sorting
 const zToABtn = document.querySelector('#alphDesc')
 zToABtn.addEventListener('click',()=>{
   sortZToA()
   render()
+  zToABtn.style.background = 'skyblue'
+  aToZBtn.style.background = '#efefef'
+  highToLowBtn.style.background = '#efefef'
+  lowToHighBtn.style.background = '#efefef'
+    
 })
 const aToZBtn = document.querySelector('#alphAsc')
 aToZBtn.addEventListener('click',()=>{
   sortAToZ()
   render()
+  aToZBtn.style.background = 'skyblue'
+  zToABtn.style.background = '#efefef'
+  highToLowBtn.style.background = '#efefef'
+  lowToHighBtn.style.background = '#efefef'
+    
 })
 
 function sortAToZ(){
