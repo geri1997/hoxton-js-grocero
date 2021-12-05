@@ -68,11 +68,18 @@ const state={
   ],
   selectedFilters:[
 
-  ]
+  ],
+  sortedInfo:{
+    sorted:false,
+    ascending:true,
+    alphabetically:false
+  },
+
 }
 const storeItemList = document.querySelector('.store--item-list')
 const cartItemList = document.querySelector('.cart--item-list')
 const priceSpan = document.querySelector('.total-number')
+
 
 
 
@@ -125,9 +132,15 @@ function createStoreProduct(product){
   //Create Add to cart button
   const addToCartButton = document.createElement('button')
   addToCartButton.textContent = 'Add to cart'
+  const productPrice = document.createElement('p')
+  productPrice.textContent = product.price
+  productPrice.style.color = 'white'
+  const productName = document.createElement('p')
+  productName.textContent = product.name
+  productName.style.color = 'white'
   //Appending
   storeItemList.append(storeProductLi)
-  storeProductLi.append(storeIconDiv,addToCartButton)
+  storeProductLi.append(storeIconDiv,addToCartButton,productName,productPrice)
   storeIconDiv.append(productImage)
 
   //Add to Cart Event listener
@@ -181,10 +194,31 @@ function createCartItems(product){
 
 function renderStoreItems(){
   storeItemList.innerHTML = ''
-  for(let product of returnColorFilteredProductArray()){
+  let colorFilteredArray = returnColorFilteredProductArray()
+  
+  colorFilteredArray.sort(function(a,b){
+    // return a.price - b.price
+    if(!state.sortedInfo.sorted){
+      return 0
+    }
+    if(state.sortedInfo.alphabetically){
+      return compareAlphabetically(a,b)
+    }else{
+      return compareByPrice(a,b)
+    }
+  })
+  for(let product of colorFilteredArray){
     createStoreProduct(product)
   }
 }
+
+function compareAlphabetically(a, b){
+  return state.sortedInfo.ascending?a.name.localeCompare(b.name):b.name.localeCompare(a.name)
+}
+function compareByPrice(a, b){
+  return state.sortedInfo.ascending ? a.price-b.price : b.price-a.price
+}
+
 function renderCartItemsAndPrice(){
   cartItemList.innerHTML = ''
   let price = 0
@@ -246,14 +280,16 @@ function render(){
 }
 
 function sortLowToHigh(){
-  state.products.sort(function (a,b){
-    return a.price - b.price
-})
+  state.sortedInfo.sorted=true
+  state.sortedInfo.ascending=true
+  state.sortedInfo.alphabetically=false
+
 }
 function sortHighToLow(){
-  state.products.sort(function (a,b){
-    return b.price - a.price
-})
+  state.sortedInfo.sorted=true
+  state.sortedInfo.ascending=false
+  state.sortedInfo.alphabetically=false
+
 }
 
 //Sort by Asceding price
@@ -264,8 +300,30 @@ lowToHighBtn.addEventListener('click',()=>{
 })
 
 //Sort by Descending price
-const HighToLowBtn = document.querySelector('#desc')
-HighToLowBtn.addEventListener('click',()=>{
+const highToLowBtn = document.querySelector('#desc')
+highToLowBtn.addEventListener('click',()=>{
   sortHighToLow()
   render()
 })
+
+const zToABtn = document.querySelector('#alphDesc')
+zToABtn.addEventListener('click',()=>{
+  sortZToA()
+  render()
+})
+const aToZBtn = document.querySelector('#alphAsc')
+aToZBtn.addEventListener('click',()=>{
+  sortAToZ()
+  render()
+})
+
+function sortAToZ(){
+  state.sortedInfo.sorted =true
+  state.sortedInfo.ascending=true
+  state.sortedInfo.alphabetically=true
+}
+function sortZToA(){
+  state.sortedInfo.sorted =true
+  state.sortedInfo.ascending=false
+  state.sortedInfo.alphabetically=true
+}
